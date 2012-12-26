@@ -6,7 +6,7 @@ timeprojection = function(x, size = c("narrow", "wide"), ...) {
     hour = factor(hour(x))
     minute = factor(minute(x))
     weekday = factor(weekdays(x))
-    bizday = factor(isBizday(x, ...))
+    bizday = factor(is.Bizday(x, ...))
     raw = data.frame(year = year,
                month = month,
                yday = yday,
@@ -22,7 +22,7 @@ timeprojection = function(x, size = c("narrow", "wide"), ...) {
     }
 }
 
-isBizday = function (x, holidays = holidayNYSE(), wday = 1:5) 
+is.Bizday = function (x, holidays = holidayNYSE(), wday = 1:5) 
 {
     char.x = substr(as.character(x), 1, 10)
     char.h = substr(as.character(holidays), 1, 10)
