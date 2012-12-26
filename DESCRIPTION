@@ -1,0 +1,16 @@
+Package: TimeProjection
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Author: jeffreyw
+Version: 1.0
+License: GPL-3
+Title: 
+Description: 
+Suggests:
+    testthat,
+    roxygen2
+Depends:
+    lubridate,
+    timeDate,
+    Matrix
+Collate:
+    'TimeProjection-package.r'
