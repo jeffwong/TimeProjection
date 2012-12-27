@@ -1,12 +1,18 @@
-timeprojection = function(x, size = c("narrow", "wide"), ...) {
-    year = factor(year(x))
-    month = factor(month(x))
-    yday = factor(yday(x))
-    mday = factor(mday(x))
-    hour = factor(hour(x))
-    minute = factor(minute(x))
-    weekday = factor(weekdays(x))
-    bizday = factor(is.Bizday(x, ...))
+timeProjection = function(dates, metrics) {
+    projection = projectDate(dates, "narrow")
+    x = cbind(projection, metrics)
+    return (x)
+}
+
+projectDate = function(dates, size = c("narrow", "wide"), ...) {
+    year = factor(year(dates))
+    month = factor(month(dates))
+    yday = factor(yday(dates))
+    mday = factor(mday(dates))
+    hour = factor(hour(dates))
+    minute = factor(minute(dates))
+    weekday = factor(weekdays(dates))
+    bizday = factor(is.Bizday(dates, ...))
     raw = data.frame(year = year,
                month = month,
                yday = yday,

@@ -1,15 +1,16 @@
 Package: TimeProjection
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Author: jeffreyw
+Maintainer: jeff.ct.wong@gmail.com
+Author: Jeffrey Wong
 Version: 1.0
 License: GPL-3
-Title: 
+Title: Time Projections
 Description: 
 Suggests:
     testthat,
     roxygen2
 Depends:
     lubridate,
+    plyr,
     timeDate,
     Matrix
 Collate:
