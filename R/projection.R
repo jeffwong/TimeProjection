@@ -9,8 +9,10 @@
 #'    containing the projections as column variables using factors.
 #'    If wide, returns a sparse matrix containing the projections as column
 #'    variables using 0-1 variables
-#' @param holidays argument to determine which days are considered holidays.
-#'    By default uses holidayNYSE provided by the timeDate package
+#' @param holidays argument to determine which days are considered holidays,
+#'    affecting the business day projection.  By default uses holidayNYSE()
+#'    provided by the timeDate package, or can be specified as a vector of
+#'    strings representing dates in the yyyy-mm-dd format
 #' @examples
 #'    dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
 #'    projectDate(dates)
