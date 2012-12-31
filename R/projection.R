@@ -1,10 +1,14 @@
-timeProjection = function(dates, metrics) {
-    projection = projectDate(dates, "narrow")
-    x = cbind(projection, metrics)
-    return (x)
-}
-
-projectDate = function(dates, size = c("narrow", "wide"), ...) {
+#' Time Projection
+#'
+#' Project dates to lower dimensional subspace
+#'
+#' @param dates date or datetime objects
+#' @param size either "narrow" or "wide.  If narrow, returns a data frame
+#'    containing the projections as column variables using factors.
+#'    If wide, returns a sparse matrix containing the projections as column
+#'    variables using 0-1 variables
+#' @export
+projectDate = function(dates, size = c("narrow", "wide")) {
     year = factor(year(dates))
     month = factor(month(dates))
     yday = factor(yday(dates))
@@ -12,7 +16,7 @@ projectDate = function(dates, size = c("narrow", "wide"), ...) {
     hour = factor(hour(dates))
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates))
-    bizday = factor(is.Bizday(dates, ...))
+    bizday = factor(is.Bizday(dates))
     raw = data.frame(year = year,
                month = month,
                yday = yday,

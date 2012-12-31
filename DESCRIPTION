@@ -1,16 +1,16 @@
 Package: TimeProjection
-Maintainer: jeff.ct.wong@gmail.com
+Maintainer: Jeffrey Wong <jeff.ct.wong@gmail.com>
 Author: Jeffrey Wong
-Version: 1.0
+Version: 0.1
 License: GPL-3
 Title: Time Projections
-Description: 
+Description: Extract useful time components of a date object, such as weekend,
+    holiday, day of month, etc.
 Suggests:
     testthat,
     roxygen2
 Depends:
     lubridate,
-    plyr,
     timeDate,
     Matrix
 Collate:
