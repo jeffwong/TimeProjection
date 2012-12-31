@@ -1,14 +1,21 @@
 #' Time Projection
 #'
-#' Project dates to lower dimensional subspace
+#' Project dates to lower dimensional subspace.
+#' Extracts components year, month, yday, mday, hour, minute, weekday
+#' and bizday from a date object
 #'
 #' @param dates date or datetime objects
-#' @param size either "narrow" or "wide.  If narrow, returns a data frame
+#' @param size either "narrow" or "wide".  If narrow, returns a data frame
 #'    containing the projections as column variables using factors.
 #'    If wide, returns a sparse matrix containing the projections as column
 #'    variables using 0-1 variables
+#' @param holidays argument to determine which days are considered holidays.
+#'    By default uses holidayNYSE provided by the timeDate package
+#' @examples
+#'    dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
+#'    projectDate(dates)
 #' @export
-projectDate = function(dates, size = c("narrow", "wide")) {
+projectDate = function(dates, size = c("narrow", "wide"), holidays = holidayNYSE()) {
     year = factor(year(dates))
     month = factor(month(dates))
     yday = factor(yday(dates))
@@ -16,7 +23,7 @@ projectDate = function(dates, size = c("narrow", "wide")) {
     hour = factor(hour(dates))
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates))
-    bizday = factor(is.Bizday(dates))
+    bizday = factor(is.Bizday(dates, holidays))
     raw = data.frame(year = year,
                month = month,
                yday = yday,
@@ -33,12 +40,18 @@ projectDate = function(dates, size = c("narrow", "wide")) {
     }
 }
 
-is.Bizday = function (x, holidays = holidayNYSE(), wday = 1:5) 
+is.Bizday = function(x, holidays) 
 {
     char.x = substr(as.character(x), 1, 10)
     char.h = substr(as.character(holidays), 1, 10)
-    Weekday = as.integer(isWeekday(x, wday = wday))
+    Weekday = as.integer(isWeekday(x, wday = 1:5))
     nonHoliday = as.integer(!(char.x %in% char.h))
     bizdays = as.logical(Weekday * nonHoliday)
     return (bizdays)
+}
+
+#' @method weekdays timeDate
+#' @S3method weekdays timeDate
+weekdays.timeDate = function(x, abbreviate=FALSE) {
+    weekdays(as.Date(x), abbreviate)
 }
