@@ -15,8 +15,10 @@
   using 0-1 variables}
 
   \item{holidays}{argument to determine which days are
-  considered holidays.  By default uses holidayNYSE
-  provided by the timeDate package}
+  considered holidays, affecting the business day
+  projection.  By default uses holidayNYSE() provided by
+  the timeDate package, or can be specified as a vector of
+  strings representing dates in the yyyy-mm-dd format}
 }
 \description{
   Project dates to lower dimensional subspace. Extracts
