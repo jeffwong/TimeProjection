@@ -27,7 +27,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates))
     bizday = factor(is.Bizday(dates, holidays))
-    season = getSeason(dates)
+    season = factor(getSeason(dates))
     raw = data.frame(year = year,
                      month = month,
                      yday = yday,
