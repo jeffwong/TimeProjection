@@ -17,7 +17,8 @@
 #'    dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
 #'    projectDate(dates)
 #' @export
-projectDate = function(dates, size = c("narrow", "wide"), holidays = holidayNYSE()) {
+projectDate = function(dates, size = c("narrow", "wide"),
+                       holidays = holidayNYSE(year = unique(year(dates)))) {
     year = factor(year(dates))
     month = factor(month(dates))
     yday = factor(yday(dates))
