@@ -27,7 +27,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates))
     bizday = factor(is.Bizday(dates, holidays))
-    season = getSeason(month)
+    season = getSeason(dates)
     raw = data.frame(year = year,
                      month = month,
                      yday = yday,
@@ -45,13 +45,19 @@ projectDate = function(dates, size = c("narrow", "wide"),
     }
 }
 
-getSeason = function(month) {
-    season = rep(0, length(month))
-    season[which(month %in% c(12,1,2))] = "Winter"
-    season[which(month %in% 3:5)] = "Spring"
-    season[which(month %in% 6:8)] = "Summer"
-    season[which(month %in% 9:11)] = "Fall"
-    as.factor(season)
+# Source: http://stackoverflow.com/questions/9500114/find-which-season-a-particular-date-belongs-to
+getSeason <- function(dates) {
+    WS <- as.Date("2012-12-15", format = "%Y-%m-%d") # Winter Solstice
+    SE <- as.Date("2012-3-15",  format = "%Y-%m-%d") # Spring Equinox
+    SS <- as.Date("2012-6-15",  format = "%Y-%m-%d") # Summer Solstice
+    FE <- as.Date("2012-9-15",  format = "%Y-%m-%d") # Fall Equinox
+
+    # Convert dates from any year to 2012 dates
+    d <- as.Date(strftime(dates, format="2012-%m-%d"))
+
+    ifelse (d >= WS | d < SE, "Winter",
+      ifelse (d >= SE & d < SS, "Spring",
+        ifelse (d >= SS & d < FE, "Summer", "Fall")))
 }
 
 is.Bizday = function(x, holidays) 
