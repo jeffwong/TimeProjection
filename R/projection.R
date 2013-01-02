@@ -36,7 +36,7 @@ projectDate = function(dates, size = c("narrow", "wide"), holidays = holidayNYSE
                bizday = bizday)
     raw.levels = apply(raw, 2, function(j) { nlevels(as.factor(j)) })
     size = match.arg(size)
-    if (size == "narrow") return (raw)
+    if (size == "narrow") return (subset(raw, select = which(raw.levels > 1)))
     if (size == "wide") {
         return (sparse.model.matrix(~ ., subset(raw, select = which(raw.levels > 1))))
     }
