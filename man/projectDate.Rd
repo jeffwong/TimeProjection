@@ -3,7 +3,7 @@
 \title{Time Projection}
 \usage{
   projectDate(dates, size = c("narrow", "wide"),
-    holidays = holidayNYSE())
+    holidays = holidayNYSE(year = unique(year(dates))))
 }
 \arguments{
   \item{dates}{date or datetime objects}
@@ -22,8 +22,8 @@
 }
 \description{
   Project dates to lower dimensional subspace. Extracts
-  components year, month, yday, mday, hour, minute, weekday
-  and bizday from a date object
+  components year, month, yday, mday, hour, minute,
+  weekday, bizday and season from a date object
 }
 \examples{
 dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")

@@ -1,8 +1,8 @@
 #' Time Projection
 #'
 #' Project dates to lower dimensional subspace.
-#' Extracts components year, month, yday, mday, hour, minute, weekday
-#' and bizday from a date object
+#' Extracts components year, month, yday, mday, hour, minute, weekday,
+#' bizday and season from a date object
 #'
 #' @param dates date or datetime objects
 #' @param size either "narrow" or "wide".  If narrow, returns a data frame
@@ -27,20 +27,31 @@ projectDate = function(dates, size = c("narrow", "wide"),
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates))
     bizday = factor(is.Bizday(dates, holidays))
+    season = getSeason(month)
     raw = data.frame(year = year,
-               month = month,
-               yday = yday,
-               mday = mday,
-               hour = hour,
-               minute = minute,
-               weekday = weekday,
-               bizday = bizday)
+                     month = month,
+                     yday = yday,
+                     mday = mday,
+                     hour = hour,
+                     minute = minute,
+                     weekday = weekday,
+                     bizday = bizday,
+                     season = season)
     raw.levels = apply(raw, 2, function(j) { nlevels(as.factor(j)) })
     size = match.arg(size)
     if (size == "narrow") return (subset(raw, select = which(raw.levels > 1)))
     if (size == "wide") {
         return (sparse.model.matrix(~ ., subset(raw, select = which(raw.levels > 1))))
     }
+}
+
+getSeason = function(month) {
+    season = rep(0, length(month))
+    season[which(month %in% c(12,1,2))] = "Winter"
+    season[which(month %in% 3:5)] = "Spring"
+    season[which(month %in% 6:8)] = "Summer"
+    season[which(month %in% 9:11)] = "Fall"
+    as.factor(season)
 }
 
 is.Bizday = function(x, holidays) 
