@@ -18,16 +18,18 @@
 #'    projectDate(dates)
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
-                       holidays = holidayNYSE(year = unique(year(dates)))) {
+                       holidays = holidayNYSE(year = unique(year(dates))),
+                       drop = T) {
     year = factor(year(dates))
     month = factor(month(dates))
     yday = factor(yday(dates))
     mday = factor(mday(dates))
     hour = factor(hour(dates))
     minute = factor(minute(dates))
-    weekday = factor(weekdays(dates))
+    weekday = factor(weekdays(dates), levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
+                                                 "Thursday", "Friday", "Saturday"))
     bizday = factor(is.Bizday(dates, holidays))
-    season = factor(getSeason(dates))
+    season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"))
     raw = data.frame(year = year,
                      month = month,
                      yday = yday,
@@ -37,11 +39,14 @@ projectDate = function(dates, size = c("narrow", "wide"),
                      weekday = weekday,
                      bizday = bizday,
                      season = season)
-    raw.levels = apply(raw, 2, function(j) { nlevels(as.factor(j)) })
+    if (drop) {
+        redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 | length(unique(j)) == 1 })
+        raw = raw[,!redundantCols]
+    }
     size = match.arg(size)
-    if (size == "narrow") return (subset(raw, select = which(raw.levels > 1)))
+    if (size == "narrow") return (raw)
     if (size == "wide") {
-        return (sparse.model.matrix(~ ., subset(raw, select = which(raw.levels > 1))))
+        return (sparse.model.matrix(~ ., raw))
     }
 }
 
