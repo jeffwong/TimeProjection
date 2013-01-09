@@ -42,7 +42,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
                      bizday = bizday,
                      season = season)
     if (drop) {
-        redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 | length(unique(j)) == 1 })
+        redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 | all(diff(as.numeric(j)) == 0) })
         raw = raw[,!redundantCols]
     }
     size = match.arg(size)
