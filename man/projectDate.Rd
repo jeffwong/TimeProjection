@@ -3,7 +3,8 @@
 \title{Time Projection}
 \usage{
   projectDate(dates, size = c("narrow", "wide"),
-    holidays = holidayNYSE(year = unique(year(dates))))
+    holidays = holidayNYSE(year = unique(year(dates))),
+    drop = T)
 }
 \arguments{
   \item{dates}{date or datetime objects}
@@ -19,6 +20,9 @@
   projection.  By default uses holidayNYSE() provided by
   the timeDate package, or can be specified as a vector of
   strings representing dates in the yyyy-mm-dd format}
+
+  \item{drop}{logical.  If true, drop any column that only
+  has 1 level or only 1 unique element in it}
 }
 \description{
   Project dates to lower dimensional subspace. Extracts

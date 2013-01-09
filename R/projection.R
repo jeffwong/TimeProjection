@@ -13,6 +13,8 @@
 #'    affecting the business day projection.  By default uses holidayNYSE()
 #'    provided by the timeDate package, or can be specified as a vector of
 #'    strings representing dates in the yyyy-mm-dd format
+#' @param drop logical.  If true, drop any column that only has 1 level or only
+#'    1 unique element in it
 #' @examples
 #'    dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
 #'    projectDate(dates)
