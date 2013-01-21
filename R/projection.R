@@ -17,7 +17,7 @@
 #'    1 unique element in it
 #' @examples
 #'    dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
-#'    projectDate(dates)
+#'    projectDate(as.Date(dates))
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
@@ -30,10 +30,10 @@ projectDate = function(dates, size = c("narrow", "wide"),
     yday.numeric = yday(dates)
     mday.numeric = mday(dates)
 
-    yweek = factor((yday.numeric - 1) / 7)
+    yweek = factor(floor((yday.numeric - 1) / 7))
     yday = factor(yday.numeric)
     
-    mweek = factor((mday.numeric - 1) / 7)
+    mweek = factor(floor((mday.numeric - 1) / 7))
     mday = factor(mday.numeric)
 
     hour = factor(hour(dates))
@@ -54,7 +54,12 @@ projectDate = function(dates, size = c("narrow", "wide"),
                      bizday = bizday,
                      season = season)
     if (drop) {
-        redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 | all(diff(as.numeric(j)) == 0) })
+        redundantCols = rep(F, ncol(raw))
+        for (i in 1:ncol(raw)) {
+            j = raw[,i]
+            if (nlevels(j) == 1) redundantCols[i] = T
+        }
+        #redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 })
         raw = raw[,!redundantCols]
     }
     size = match.arg(size)

@@ -31,6 +31,6 @@
 }
 \examples{
 dates = timeSequence(from = "2001-01-01", to = "2004-01-01", by = "day")
-   projectDate(dates)
+   projectDate(as.Date(dates))
 }
 
