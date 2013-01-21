@@ -22,10 +22,20 @@
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
                        drop = T) {
+    dates = dates[order(dates)]
+
     year = factor(year(dates))
     month = factor(month(dates))
-    yday = factor(yday(dates))
-    mday = factor(mday(dates))
+
+    yday.numeric = yday(dates)
+    mday.numeric = mday(dates)
+
+    yweek = factor((yday.numeric - 1) / 7)
+    yday = factor(yday.numeric)
+    
+    mweek = factor((mday.numeric - 1) / 7)
+    mday = factor(mday.numeric)
+
     hour = factor(hour(dates))
     minute = factor(minute(dates))
     weekday = factor(weekdays(dates), levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
@@ -34,6 +44,8 @@ projectDate = function(dates, size = c("narrow", "wide"),
     season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"))
     raw = data.frame(year = year,
                      month = month,
+                     yweek = yweek,
+                     mweek = mweek,
                      yday = yday,
                      mday = mday,
                      hour = hour,
