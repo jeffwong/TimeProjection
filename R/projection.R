@@ -30,10 +30,10 @@ projectDate = function(dates, size = c("narrow", "wide"),
     yday.numeric = yday(dates)
     mday.numeric = mday(dates)
 
-    yweek = factor(floor((yday.numeric - 1) / 7))
+    yweek = factor(floor((yday.numeric - 1) / 7) + 1)
     yday = factor(yday.numeric)
     
-    mweek = factor(floor((mday.numeric - 1) / 7))
+    mweek = factor(floor((mday.numeric - 1) / 7) + 1)
     mday = factor(mday.numeric)
 
     hour = factor(hour(dates))
