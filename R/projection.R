@@ -22,8 +22,6 @@
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
                        drop = T) {
-    dates = dates[order(dates)]
-
     year = factor(year(dates))
     month = factor(month(dates))
 
