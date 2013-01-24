@@ -54,7 +54,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
     if (drop) {
         redundantCols = rep(F, ncol(raw))
         for (i in 1:ncol(raw)) {
-            j = raw[,i]
+            j = raw[1,i]
             if (nlevels(j) == 1) redundantCols[i] = T
         }
         #redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 })
@@ -63,7 +63,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
     size = match.arg(size)
     if (size == "narrow") return (raw)
     if (size == "wide") {
-        return (sparse.model.matrix(~ ., raw))
+        return (sparse.model.matrix(~ . -1, raw))
     }
 }
 
