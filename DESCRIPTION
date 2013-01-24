@@ -2,7 +2,7 @@ Package: TimeProjection
 URL: https://github.com/jeffwong/TimeProjection
 Maintainer: Jeffrey Wong <jeff.ct.wong@gmail.com>
 Author: Jeffrey Wong
-Version: 0.1.1
+Version: 0.1.2
 License: GPL-3
 Title: Time Projections
 Description: Extract useful time components of a date object, such as day of
