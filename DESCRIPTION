@@ -11,7 +11,9 @@ Description: Extract useful time components of a date object, such as day of
     variable, which can then be used in a regression or decision tree.
 Suggests:
     testthat,
-    roxygen2
+    roxygen2,
+    ggplot2,
+    plyr
 Depends:
     lubridate,
     timeDate,
@@ -19,3 +21,4 @@ Depends:
 Collate:
     'TimeProjection-package.r'
     'projection.R'
+    'calendarHeatmap.R'
