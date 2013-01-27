@@ -13,6 +13,8 @@
 #'    affecting the business day projection.  By default uses holidayNYSE()
 #'    provided by the timeDate package, or can be specified as a vector of
 #'    strings representing dates in the yyyy-mm-dd format
+#' @param as.numeric logical only used when size = "narrow".  Returns the
+#'    columns as numeric values instead of factors
 #' @param drop logical.  If true, drop any column that only has 1 level or only
 #'    1 unique element in it
 #' @examples
@@ -21,25 +23,34 @@
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
-                       drop = T) {
-    year = factor(year(dates))
-    month = factor(month(dates))
+                       as.numeric = F, drop = T) {
+    size = match.arg(size)
+    year = year(dates)
+    month = month(dates)
+    yday = yday(dates)
+    mday = mday(dates)
+    yweek = floor((yday - 1) / 7) + 1
+    mweek = floor((mday - 1) / 7) + 1
+    hour = hour(dates)
+    minute = minute(dates)
 
-    yday.numeric = yday(dates)
-    mday.numeric = mday(dates)
-
-    yweek = factor(floor((yday.numeric - 1) / 7) + 1)
-    yday = factor(yday.numeric)
+    if (!as.numeric | size == "wide") {
+        year = factor(year, ordered = T)
+        month = factor(month, levels = 1:12, ordered = T)
+        yday = factor(yday, levels = 1:366, ordered = T)
+        mday = factor(mday, levels = 1:31, ordered = T)
+        yweek = factor(yweek, levels = 1:53, ordered = T)
+        mweek = factor(mweek, levels = 1:5, ordered = T)
+        hour = factor(hour, levels = 0:23, ordered = T)
+        minute = factor(minute, levels = 0:59, ordered = T)
+    }
     
-    mweek = factor(floor((mday.numeric - 1) / 7) + 1)
-    mday = factor(mday.numeric)
-
-    hour = factor(hour(dates))
-    minute = factor(minute(dates))
     weekday = factor(weekdays(dates), levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
-                                                 "Thursday", "Friday", "Saturday"))
+                                                 "Thursday", "Friday", "Saturday"),
+                     ordered = T)
     bizday = factor(is.Bizday(dates, holidays))
-    season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"))
+    season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"),
+                    ordered = T)
     raw = data.frame(year = year,
                      month = month,
                      yweek = yweek,
@@ -54,13 +65,11 @@ projectDate = function(dates, size = c("narrow", "wide"),
     if (drop) {
         redundantCols = rep(F, ncol(raw))
         for (i in 1:ncol(raw)) {
-            j = raw[1,i]
-            if (nlevels(j) == 1) redundantCols[i] = T
+            if (all(diff(as.numeric(raw[,i])) == 0)) redundantCols[i] = T
         }
         #redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 })
         raw = raw[,!redundantCols]
     }
-    size = match.arg(size)
     if (size == "narrow") return (raw)
     if (size == "wide") {
         return (sparse.model.matrix(~ . -1, raw))
