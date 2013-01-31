@@ -2,13 +2,14 @@ Package: TimeProjection
 URL: https://github.com/jeffwong/TimeProjection
 Maintainer: Jeffrey Wong <jeff.ct.wong@gmail.com>
 Author: Jeffrey Wong
-Version: 0.1.2
+Version: 0.2.0
 License: GPL-3
 Title: Time Projections
 Description: Extract useful time components of a date object, such as day of
     week, weekend, holiday, day of month, etc, and put it in a data frame.
     This can be used to create many predictor variables out of a single time
-    variable, which can then be used in a regression or decision tree.
+    variable, which can then be used in a regression or decision tree.  Also
+    includes function plotCalendarHeatmap
 Suggests:
     testthat,
     roxygen2,
