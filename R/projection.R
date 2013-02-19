@@ -44,10 +44,9 @@ projectDate = function(dates, size = c("narrow", "wide"),
         hour = factor(hour, levels = 0:23, ordered = T)
         minute = factor(minute, levels = 0:59, ordered = T)
     }
-    
-    weekday = factor(weekdays(dates), levels = c("Sunday", "Monday", "Tuesday", "Wednesday",
-                                                 "Thursday", "Friday", "Saturday"),
-                     ordered = T)
+
+    weekday_labels = weekdays(as.Date(timeSequence(from = "2012-01-01", to = "2012-01-07", by = "day")))
+    weekday = factor(weekdays(dates), levels = weekday_labels, ordered = T)
     bizday = factor(is.Bizday(dates, holidays))
     season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"),
                     ordered = T)
