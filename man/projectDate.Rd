@@ -4,7 +4,7 @@
 \usage{
   projectDate(dates, size = c("narrow", "wide"),
     holidays = holidayNYSE(year = unique(year(dates))),
-    as.numeric = F, prefix = "", drop = T)
+    as.numeric = F, ordered = T, prefix = "", drop = T)
 }
 \arguments{
   \item{dates}{date or datetime objects}
@@ -25,6 +25,9 @@
 
   \item{as.numeric}{logical only used when size = "narrow".
   Returns the columns as numeric values instead of factors}
+
+  \item{ordered}{logical.  When reporting time projection
+  as factors, should the factors be reported as ordered}
 
   \item{prefix}{optional.  A character vector that is
   prepended to the column names of the time projection}

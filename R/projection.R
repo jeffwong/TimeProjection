@@ -16,6 +16,8 @@
 #'    holidays should not be considered when computing isBusinessDay
 #' @param as.numeric logical only used when size = "narrow".  Returns the
 #'    columns as numeric values instead of factors
+#' @param ordered logical.  When reporting time projection as factors, should
+#'    the factors be reported as ordered
 #' @param prefix optional.  A character vector that is prepended to the column names
 #'    of the time projection
 #' @param drop logical.  If true, drop any column that only has 1 level or only
@@ -26,7 +28,7 @@
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
-                       as.numeric = F, prefix = "", drop = T) {
+                       as.numeric = F, ordered = T, prefix = "", drop = T) {
     size = match.arg(size)
     year = year(dates)
     month = month(dates)
@@ -38,21 +40,21 @@ projectDate = function(dates, size = c("narrow", "wide"),
     minute = minute(dates)
 
     if (!as.numeric | size == "wide") {
-        year = factor(year, ordered = T)
-        month = factor(month, levels = 1:12, ordered = T)
-        yday = factor(yday, levels = 1:366, ordered = T)
-        mday = factor(mday, levels = 1:31, ordered = T)
-        yweek = factor(yweek, levels = 1:53, ordered = T)
-        mweek = factor(mweek, levels = 1:5, ordered = T)
-        hour = factor(hour, levels = 0:23, ordered = T)
-        minute = factor(minute, levels = 0:59, ordered = T)
+        year = factor(year, ordered = ordered)
+        month = factor(month, levels = 1:12, ordered = ordered)
+        yday = factor(yday, levels = 1:366, ordered = ordered)
+        mday = factor(mday, levels = 1:31, ordered = ordered)
+        yweek = factor(yweek, levels = 1:53, ordered = ordered)
+        mweek = factor(mweek, levels = 1:5, ordered = ordered)
+        hour = factor(hour, levels = 0:23, ordered = ordered)
+        minute = factor(minute, levels = 0:59, ordered = ordered)
     }
 
     weekday_labels = weekdays(as.Date(timeSequence(from = "2012-01-01", to = "2012-01-07", by = "day")))
-    weekday = factor(weekdays(dates), levels = weekday_labels, ordered = T)
+    weekday = factor(weekdays(dates), levels = weekday_labels, ordered = ordered)
     bizday = factor(is.Bizday(dates, holidays))
     season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"),
-                    ordered = T)
+                    ordered = ordered)
     raw = data.frame(year = year,
                      month = month,
                      yweek = yweek,
