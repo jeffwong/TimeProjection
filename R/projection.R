@@ -15,6 +15,8 @@
 #'    strings representing dates in the yyyy-mm-dd format
 #' @param as.numeric logical only used when size = "narrow".  Returns the
 #'    columns as numeric values instead of factors
+#' @param prefix optional.  A character vector that is prepended to the column names
+#'    of the time projection
 #' @param drop logical.  If true, drop any column that only has 1 level or only
 #'    1 unique element in it
 #' @examples
@@ -23,7 +25,7 @@
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
-                       as.numeric = F, drop = T) {
+                       as.numeric = F, prefix="", drop = T) {
     size = match.arg(size)
     year = year(dates)
     month = month(dates)
@@ -61,6 +63,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
                      weekday = weekday,
                      bizday = bizday,
                      season = season)
+    colnames(raw) = paste(prefix, colnames(raw), sep=".")
     if (drop) {
         redundantCols = rep(F, ncol(raw))
         for (i in 1:ncol(raw)) {

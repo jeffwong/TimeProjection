@@ -4,7 +4,7 @@
 \usage{
   projectDate(dates, size = c("narrow", "wide"),
     holidays = holidayNYSE(year = unique(year(dates))),
-    as.numeric = F, drop = T)
+    as.numeric = F, prefix = "", drop = T)
 }
 \arguments{
   \item{dates}{date or datetime objects}
@@ -23,6 +23,9 @@
 
   \item{as.numeric}{logical only used when size = "narrow".
   Returns the columns as numeric values instead of factors}
+
+  \item{prefix}{optional.  A character vector that is
+  prepended to the column names of the time projection}
 
   \item{drop}{logical.  If true, drop any column that only
   has 1 level or only 1 unique element in it}
