@@ -12,7 +12,8 @@
 #' @param holidays argument to determine which days are considered holidays,
 #'    affecting the business day projection.  By default uses holidayNYSE()
 #'    provided by the timeDate package, or can be specified as a vector of
-#'    strings representing dates in the yyyy-mm-dd format
+#'    strings representing dates in the yyyy-mm-dd format.  Use NULL if 
+#'    holidays should not be considered when computing isBusinessDay
 #' @param as.numeric logical only used when size = "narrow".  Returns the
 #'    columns as numeric values instead of factors
 #' @param prefix optional.  A character vector that is prepended to the column names
@@ -25,7 +26,7 @@
 #' @export
 projectDate = function(dates, size = c("narrow", "wide"),
                        holidays = holidayNYSE(year = unique(year(dates))),
-                       as.numeric = F, prefix="", drop = T) {
+                       as.numeric = F, prefix = "", drop = T) {
     size = match.arg(size)
     year = year(dates)
     month = month(dates)
@@ -63,13 +64,12 @@ projectDate = function(dates, size = c("narrow", "wide"),
                      weekday = weekday,
                      bizday = bizday,
                      season = season)
-    colnames(raw) = paste(prefix, colnames(raw), sep=".")
+    if (prefix != "") colnames(raw) = paste(prefix, colnames(raw), sep=".")
     if (drop) {
         redundantCols = rep(F, ncol(raw))
         for (i in 1:ncol(raw)) {
             if (all(diff(as.numeric(raw[,i])) == 0)) redundantCols[i] = T
         }
-        #redundantCols = apply(raw, 2, function(j) { nlevels(j) == 1 })
         raw = raw[,!redundantCols]
     }
     if (size == "narrow") return (raw)
@@ -93,13 +93,18 @@ getSeason <- function(dates) {
         ifelse (d >= SS & d < FE, "Summer", "Fall")))
 }
 
-is.Bizday = function(x, holidays) 
+is.Bizday = function(x, holidays=NULL) 
 {
-    char.x = substr(as.character(x), 1, 10)
-    char.h = substr(as.character(holidays), 1, 10)
     Weekday = as.integer(isWeekday(x, wday = 1:5))
-    nonHoliday = as.integer(!(char.x %in% char.h))
-    bizdays = as.logical(Weekday * nonHoliday)
+    if (is.null(holidays)) {
+      char.x = substr(as.character(x), 1, 10)
+      char.h = substr(as.character(holidays), 1, 10)
+      nonHoliday = as.integer(!(char.x %in% char.h))
+      bizdays = as.logical(Weekday * nonHoliday)
+    }
+    else {
+      bizdays = as.logical(Weekday)
+    }
     return (bizdays)
 }
 

@@ -19,7 +19,9 @@
   considered holidays, affecting the business day
   projection.  By default uses holidayNYSE() provided by
   the timeDate package, or can be specified as a vector of
-  strings representing dates in the yyyy-mm-dd format}
+  strings representing dates in the yyyy-mm-dd format.  Use
+  NULL if holidays should not be considered when computing
+  isBusinessDay}
 
   \item{as.numeric}{logical only used when size = "narrow".
   Returns the columns as numeric values instead of factors}
