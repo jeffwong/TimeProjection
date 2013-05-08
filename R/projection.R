@@ -98,7 +98,7 @@ getSeason <- function(dates) {
 is.Bizday = function(x, holidays=NULL) 
 {
     Weekday = as.integer(isWeekday(x, wday = 1:5))
-    if (is.null(holidays)) {
+    if (!is.null(holidays)) {
       char.x = substr(as.character(x), 1, 10)
       char.h = substr(as.character(holidays), 1, 10)
       nonHoliday = as.integer(!(char.x %in% char.h))
