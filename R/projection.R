@@ -38,9 +38,20 @@ projectDate = function(dates, size = c("narrow", "wide"),
     mweek = floor((mday - 1) / 7) + 1
     hour = hour(dates)
     minute = minute(dates)
-
+    
+    q1 = which(month %in% 1:3)
+    q2 = which(month %in% 4:6)
+    q3 = which(month %in% 7:9)
+    q4 = which(month %in% 10:12)
+    quarter = rep(0, length(dates))
+    quarter[q1] = 1
+    quarter[q2] = 2
+    quarter[q3] = 3
+    quarter[q4] = 4
+    
     if (!as.numeric | size == "wide") {
         year = factor(year, ordered = ordered)
+        quarter = factor(quarter, levels = 1:4, ordered = ordered)
         month = factor(month, levels = 1:12, ordered = ordered)
         yday = factor(yday, levels = 1:366, ordered = ordered)
         mday = factor(mday, levels = 1:31, ordered = ordered)
@@ -56,6 +67,7 @@ projectDate = function(dates, size = c("narrow", "wide"),
     season = factor(getSeason(dates), levels = c("Winter", "Spring", "Summer", "Fall"),
                     ordered = ordered)
     raw = data.frame(year = year,
+                     quarter = quarter,
                      month = month,
                      yweek = yweek,
                      mweek = mweek,
